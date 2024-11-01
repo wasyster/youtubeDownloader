@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:MauiValidationLibrary.Converters;assembly=MauiValidationLibrary"
+             xmlns:viewModel="clr-namespace:MauiApplication.ViewModels"
+             x:DataType="viewModel:LoginViewModel"
+             x:Class="MauiApplication.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView HorizontalOptions="CenterAndExpand">
+        <VerticalStackLayout HorizontalOptions="CenterAndExpand">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+                <Label Text="Email:"
+                       TextColor="White"/>
+                <Entry Text="{Binding Email.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style">
+                            <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                            <On Platform="WinUI" Value="{StaticResource WinUIEntryStyle}" />
+                        </OnPlatform>
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEmailCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label Text="{Binding Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                       Style="{StaticResource ValidationErrorLabelStyle}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+                <Label Text="Password:"
+                       TextColor="White" />
+                <Entry Text="{Binding Password.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style">
+                            <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                            <On Platform="WinUI" Value="{StaticResource WinUIEntryStyle}" />
+                        </OnPlatform>
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Password.IsValid}" Value="False">
+                            <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label Text="{Binding Password.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                       Style="{StaticResource ValidationErrorLabelStyle}" />
+            </VerticalStackLayout>
+
+            <Button x:Name="loginButton"
+                    Text="Login" 
+                    SemanticProperties.Hint="On click logs in the user"
+                    Command="{Binding LoginAsyncCommand}"
+                    HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
