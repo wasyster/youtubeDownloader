@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:ValidationLibraryProject.Converters;assembly=ValidationLibraryProject"
+             xmlns:viewModel="clr-namespace:MauiApplication.ViewModels"
+             x:DataType="viewModel:MainPageViewModel"
+             x:Class="MauiApplication.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <SearchBar x:Name="searchBar" 
+                   Placeholder="youtube.com video link"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
+
+        <VerticalStackLayout toolkit:StateContainer.CurrentState="{Binding CurrentState}">
+            <toolkit:StateContainer.StateViews>
+                <VerticalStackLayout toolkit:StateView.StateKey="Loading">
+                    <ActivityIndicator IsRunning="True" />
+                    <Label Text="Loading Content..." />
+                </VerticalStackLayout>
+
+                <Label toolkit:StateView.StateKey="Error"
+                       Text="Error occoured while on fatching the video(s)!" />
+
+                <Label toolkit:StateView.StateKey="NotAYoutubeVideoLink"
+                       Text="Not a youtube link!" />
+
+                <Label toolkit:StateView.StateKey="Empty"
+                       Text="Youtube link not entered!" />
+
+                <Label toolkit:StateView.StateKey="Success"
+                       Text="Success!" />
+            </toolkit:StateContainer.StateViews>
+        </VerticalStackLayout>
+    </StackLayout>
+
+</ContentPage>

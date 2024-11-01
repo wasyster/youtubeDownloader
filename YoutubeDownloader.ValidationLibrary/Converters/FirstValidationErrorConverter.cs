@@ -1,4 +1,4 @@
-﻿namespace MauiValidationLibrary.Converters;
+﻿namespace ValidationLibraryProject.Converters;
 
 public class FirstValidationErrorConverter : IValueConverter
 {

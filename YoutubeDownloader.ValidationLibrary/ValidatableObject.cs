@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace MauiValidationLibrary;
+﻿namespace ValidationLibraryProject;
 
 public class ValidatableObject<T> : ObservableObject
 {

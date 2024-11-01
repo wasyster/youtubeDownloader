@@ -1,11 +1,12 @@
 ﻿namespace MauiApplication;
+
 public partial class MainPage : ContentPage
 {
     public static string Name => nameof(MainPage);
 
-    public LoginViewModel ViewModel => this.BindingContext as LoginViewModel;
+    public MainPageViewModel ViewModel => this.BindingContext as MainPageViewModel;
 
-    public MainPage(LoginViewModel viewModel)
+    public MainPage(MainPageViewModel viewModel)
     {
         this.BindingContext = viewModel;
 

@@ -1,4 +1,4 @@
-﻿namespace MauiValidationLibrary.ValidationRules;
+﻿namespace ValidationLibraryProject.ValidationRules;
 
 public class IsNotNullOrEmptyRule<T> : IValidationRule<T>
 {

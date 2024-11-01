@@ -1,4 +1,4 @@
-﻿namespace MauiValidationLibrary;
+﻿namespace ValidationLibraryProject;
 
 public interface IValidationRule<T>
 {

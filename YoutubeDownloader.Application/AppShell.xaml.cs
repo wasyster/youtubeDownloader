@@ -1,10 +1,16 @@
-﻿namespace MauiApplication
+﻿namespace MauiApplication;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        RegisterRoutes();
+    }
+
+    private void RegisterRoutes()
+    {
+        Routing.RegisterRoute(MainPage.Name, typeof(MainPage));
+
     }
 }

@@ -57,23 +57,29 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Common" Version="8.3.0" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
-		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.1.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.2.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MauiValidationLibrary\MauiValidationLibrary.csproj" />
+	  <ProjectReference Include="..\ValidationLibraryProject\ValidationLibraryProject.csproj" />
+	  <ProjectReference Include="..\YoutubeDownloader.Services\ServicesProject.csproj" />
+	  <ProjectReference Include="..\YoutubeDownloader.ValidationLibrary\ValidationLibraryProject.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Styles\CustomStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\" />
 	</ItemGroup>
 
 </Project>
