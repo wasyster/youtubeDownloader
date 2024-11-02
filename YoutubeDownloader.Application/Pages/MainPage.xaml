@@ -4,6 +4,8 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:ValidationLibraryProject.Converters;assembly=ValidationLibraryProject"
              xmlns:viewModel="clr-namespace:MauiApplication.ViewModels"
+             xmlns:component="clr-namespace:MauiApplication.Components"
+             xmlns:model="clr-namespace:MauiApplication.Models"
              x:DataType="viewModel:MainPageViewModel"
              x:Class="MauiApplication.MainPage">
 
@@ -35,8 +37,23 @@
                 <Label toolkit:StateView.StateKey="Empty"
                        Text="Youtube link not entered!" />
 
-                <Label toolkit:StateView.StateKey="Success"
-                       Text="Success!" />
+                <ScrollView toolkit:StateView.StateKey="Success">
+                    <CollectionView ItemsSource="{Binding SearchResults}"
+                                   Margin="0,15,0,25">
+                        <CollectionView.Header>
+                            <Label Text="Kapott üzenetek"
+                                   Style="{x:StaticResource FormTitle}" />
+                        </CollectionView.Header>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:SearchResults">
+                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
             </toolkit:StateContainer.StateViews>
         </VerticalStackLayout>
     </StackLayout>

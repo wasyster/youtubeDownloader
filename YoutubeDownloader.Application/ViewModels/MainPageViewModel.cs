@@ -6,7 +6,7 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
     string currentState = StateContainerStates.Youtube.Loading;
 
     [ObservableProperty]
-    private ObservableCollection<SearchResult> items;
+    private ObservableCollection<SearchResult> searchResults;
 
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 

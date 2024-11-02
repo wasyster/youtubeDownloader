@@ -73,13 +73,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Components\SearchResultLineItem.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\CustomStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Components\" />
 	</ItemGroup>
 
 </Project>
