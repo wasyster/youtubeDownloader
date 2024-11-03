@@ -1,7 +1,9 @@
 ﻿namespace YoutubeDownloader.MauiApplication.Models;
 
-public class SearchResult : ObservableObject, IVideo
+public partial class SearchResult : ObservableObject, IVideo
 {
+
+    #region IVideo
     //
     // Summary:
     //     Video ID.
@@ -34,6 +36,10 @@ public class SearchResult : ObservableObject, IVideo
     // Summary:
     //     Video thumbnails.
     public IReadOnlyList<Thumbnail> Thumbnails { get; }
+    #endregion
+
+    [ObservableProperty]
+    private bool download;
 
     public SearchResult()
     {

@@ -1,11 +1,12 @@
-﻿namespace YoutubeDownloader.MauiApplication;
-
-public partial class App : Microsoft.Maui.Controls.Application
+﻿namespace YoutubeDownloader.MauiApplication
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
+        public App()
+        {
+            InitializeComponent();
 
-        MainPage = new AppShell();
+            MainPage = new AppShell();
+        }
     }
 }

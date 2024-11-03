@@ -1,16 +1,10 @@
-﻿namespace YoutubeDownloader.MauiApplication;
-
-public partial class AppShell : Shell
+﻿namespace YoutubeDownloader.MauiApplication
 {
-    public AppShell()
+    public partial class AppShell : Shell
     {
-        InitializeComponent();
-        RegisterRoutes();
-    }
-
-    private void RegisterRoutes()
-    {
-        Routing.RegisterRoute(MainPage.Name, typeof(MainPage));
-
+        public AppShell()
+        {
+            InitializeComponent();
+        }
     }
 }

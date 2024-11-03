@@ -7,6 +7,9 @@
     Shell.FlyoutBehavior="Disabled"
     Title="YoutubeDownloader.MauiApplication">
 
-    <ShellContent ContentTemplate="{DataTemplate local:MainPage}"
-                  Route="MainPage" />
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
 </Shell>

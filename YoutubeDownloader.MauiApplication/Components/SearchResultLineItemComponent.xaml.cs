@@ -2,7 +2,7 @@ namespace YoutubeDownloader.MauiApplication.Components;
 
 public partial class SearchResultLineItemComponent : ContentView
 {
-	public static readonly BindableProperty SearchResultProperty = BindableProperty.Create(
+    public static readonly BindableProperty SearchResultProperty = BindableProperty.Create(
         propertyName: nameof(SearchResult),
         returnType: typeof(SearchResult),
         declaringType: typeof(SearchResultLineItemComponent),
@@ -15,8 +15,7 @@ public partial class SearchResultLineItemComponent : ContentView
         set => SetValue(SearchResultProperty, value);
     }
 
-
-	public SearchResultLineItemComponent()
+    public SearchResultLineItemComponent()
 	{
 		InitializeComponent();
 	}

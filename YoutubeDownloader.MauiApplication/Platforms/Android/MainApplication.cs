@@ -1,10 +1,10 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace YoutubeDownloader.Application
+namespace YoutubeDownloader.MauiApplication
 {
     [Application]
-    public class MainApplication : YoutubeDownloader.MauiApplication
+    public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)
             : base(handle, ownership)

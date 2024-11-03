@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace YoutubeDownloader.Application
+namespace YoutubeDownloader.MauiApplication
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace YoutubeDownloader.Application
+namespace YoutubeDownloader.MauiApplication
 {
     public class Program
     {
