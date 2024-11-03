@@ -1,4 +1,4 @@
-﻿namespace ServicesProject;
+﻿namespace YoutubeDownloader.Services;
 
 public interface IYoutubeService
 {

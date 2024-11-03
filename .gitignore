@@ -1,8 +1,5 @@
-﻿YoutubeDownloader.ValidationLibrary/bin
-.vs/YoutubeDownloaderSolution/DesignTimeBuild
-.vs/YoutubeDownloaderSolution/FileContentIndex
-YoutubeDownloader.Application/bin
-YoutubeDownloader.Application/obj
-YoutubeDownloader.ValidationLibrary/obj
-.vs
+﻿YoutubeDownloader.MauiApplication/obj
+YoutubeDownloader.Services/bin
 YoutubeDownloader.Services/obj
+YoutubeDownloader.Validation/bin
+YoutubeDownloader.Validation/obj

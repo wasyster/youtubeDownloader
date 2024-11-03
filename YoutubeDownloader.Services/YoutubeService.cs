@@ -1,4 +1,4 @@
-﻿namespace ServicesProject;
+﻿namespace YoutubeDownloader.Services;
 
 public class YoutubeService(YoutubeClient youtubeClient) : IYoutubeService
 {
