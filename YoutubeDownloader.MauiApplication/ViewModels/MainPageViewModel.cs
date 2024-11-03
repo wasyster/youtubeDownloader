@@ -9,6 +9,7 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
     private ObservableCollection<SearchResult> searchResults;
 
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
+    private string isYoututbePlaylistPattern = @"(youtube\.com\/playlist\?list=|youtu\.be\/.*\?list=)";
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsnc);
 
@@ -41,4 +42,6 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
             CurrentState = StateContainerStates.Youtube.Error;
         }
     }
+
+    private bool IsPlaylistUrl(string url) => Regex.IsMatch(url, isYoututbePlaylistPattern);
 }
