@@ -3,7 +3,7 @@
 public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchModel
 {
     [ObservableProperty]
-    string currentState = StateContainerStates.Youtube.Loading;
+    string currentState = StateContainerStates.Youtube.Empty;
 
     [ObservableProperty]
     private ObservableCollection<SearchResult> searchResults;
@@ -14,6 +14,8 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
 
     private async Task SearchCommandAsnc(string videoUrl)
     {
+        CurrentState = StateContainerStates.Youtube.Loading;
+
         if (!IsModelValid())
         {
             CurrentState = StateContainerStates.Youtube.Empty;

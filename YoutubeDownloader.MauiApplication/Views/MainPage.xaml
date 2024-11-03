@@ -6,8 +6,8 @@
              xmlns:viewModel="clr-namespace:YoutubeDownloader.MauiApplication.ViewModels"
              xmlns:component="clr-namespace:YoutubeDownloader.MauiApplication.Components"
              xmlns:model="clr-namespace:YoutubeDownloader.MauiApplication.Models"
-             x:DataType="viewModel:MainPageViewModel"
-             x:Class="YoutubeDownloader.MauiApplication.MainPage">
+             x:Class="YoutubeDownloader.MauiApplication.Views.MainPage"
+             x:DataType="viewModel:MainPageViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -41,8 +41,7 @@
                     <CollectionView ItemsSource="{Binding SearchResults}"
                                    Margin="0,15,0,25">
                         <CollectionView.Header>
-                            <Label Text="Kapott üzenetek"
-                                   Style="{x:StaticResource FormTitle}" />
+                            <Label Text="Kapott üzenetek" />
                         </CollectionView.Header>
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>

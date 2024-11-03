@@ -6,5 +6,6 @@ public class YoutubeService(YoutubeClient youtubeClient) : IYoutubeService
     {
         var videos = await youtubeClient.Playlists.GetVideosAsync(videoURL);
 
-        return videos;    }
+        return videos;
+    }
 }

@@ -31,7 +31,7 @@ public class ValidatableObject<T> : ObservableObject
     }
     public bool Validate()
     {
-        Errors = Validations?.Where(x => !x.Check(Value))
+        Errors = Validations?.Where(x => x.Check(Value))
                             ?.Select(x => x.ValidationMessage)
                             ?.ToArray() ?? [];
 

@@ -19,3 +19,4 @@ global using System.Text.RegularExpressions;
 global using YoutubeExplode.Videos;
 global using CommunityToolkit.Maui.Core.Extensions;
 global using Microsoft.Maui.LifecycleEvents;
+global using YoutubeDownloader.MauiApplication.Views;
