@@ -15,13 +15,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout>
+    <StackLayout VerticalOptions="FillAndExpand">
         <SearchBar x:Name="searchBar" 
                    Placeholder="youtube.com video link"
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
 
-        <VerticalStackLayout toolkit:StateContainer.CurrentState="{Binding CurrentState}">
+        <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand">
             <toolkit:StateContainer.StateViews>
                 <VerticalStackLayout toolkit:StateView.StateKey="Loading">
                     <ActivityIndicator IsRunning="True" />
@@ -41,7 +41,9 @@
                     <CollectionView ItemsSource="{Binding SearchResults}"
                                    Margin="0,15,0,25">
                         <CollectionView.Header>
-                            <Label Text="Kapott üzenetek" />
+                            <Label Text="Found video(s)" FontSize="20" FontAttributes="Bold"
+                                   HorizontalOptions="Center" 
+                                   Margin="0,0,0,20"/>
                         </CollectionView.Header>
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
@@ -54,7 +56,7 @@
                     </CollectionView>
                 </ScrollView>
             </toolkit:StateContainer.StateViews>
-        </VerticalStackLayout>
+        </Grid>
     </StackLayout>
 
 </ContentPage>

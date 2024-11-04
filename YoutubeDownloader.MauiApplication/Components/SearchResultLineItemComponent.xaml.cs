@@ -14,8 +14,7 @@ public partial class SearchResultLineItemComponent : ContentView
         get => (SearchResult)GetValue(SearchResultProperty);
         set => SetValue(SearchResultProperty, value);
     }
-
-    public SearchResultLineItemComponent()
+	public SearchResultLineItemComponent()
 	{
 		InitializeComponent();
 	}
