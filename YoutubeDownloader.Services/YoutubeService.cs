@@ -1,14 +1,42 @@
-﻿using YoutubeExplode.Videos.Streams;
-
-namespace YoutubeDownloader.Services;
+﻿namespace YoutubeDownloader.Services;
 
 public class YoutubeService(YoutubeClient youtubeClient) : IYoutubeService
 {
-    public async Task<IReadOnlyList<PlaylistVideo>> GetVideosDataAsync(string videoURL)
-    {
-        var videos = await youtubeClient.Playlists.GetVideosAsync(videoURL);
+	private static string isYoututbePlaylistPattern = @"(youtube\.com\/playlist\?list=|youtu\.be\/.*\?list=)";
 
-        return videos;
+	public async Task<IReadOnlyCollection<IVideo>> GetVideosDataAsync(string videoURL)
+    {
+		var isUrlPlaylist = IsPlaylistUrl(videoURL);
+		var result = new List<IVideo>();
+
+		try
+		{
+			if (isUrlPlaylist)
+			{
+				var videos = await youtubeClient.Playlists.GetVideosAsync(videoURL);
+
+				foreach(var video in videos)
+				{
+					result.Add(video);
+				}
+			}
+			else
+			{
+				var video = await youtubeClient.Videos.GetAsync(videoURL);
+				result.Add(video);
+			}
+		}
+		catch
+		{
+			var videos = await youtubeClient.Playlists.GetVideosAsync(videoURL);
+
+			foreach (var video in videos)
+			{
+				result.Add(video);
+			}
+		}
+
+		return result;
     }
 
     public async Task DownloadVideoAsync(string videoURL)
@@ -28,4 +56,6 @@ public class YoutubeService(YoutubeClient youtubeClient) : IYoutubeService
 		var streamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
 		await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, $"video.{streamInfo.Container}");
 	}
+
+	private bool IsPlaylistUrl(string url) => Regex.IsMatch(url, isYoututbePlaylistPattern);
 }

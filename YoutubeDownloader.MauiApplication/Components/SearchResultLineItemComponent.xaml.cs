@@ -9,11 +9,12 @@ public partial class SearchResultLineItemComponent : ContentView
         defaultValue: null,
         defaultBindingMode: BindingMode.TwoWay);
 
-    public SearchResult SearchResult
+	public SearchResult SearchResult
     {
         get => (SearchResult)GetValue(SearchResultProperty);
         set => SetValue(SearchResultProperty, value);
     }
+
 	public SearchResultLineItemComponent()
 	{
 		InitializeComponent();

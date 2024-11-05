@@ -9,11 +9,12 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
     private ObservableCollection<SearchResult> searchResults;
 
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
-    private string isYoututbePlaylistPattern = @"(youtube\.com\/playlist\?list=|youtu\.be\/.*\?list=)";
 
-    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsnc);
+    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);
 
-    private async Task SearchCommandAsnc(string videoUrl)
+    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadCommandAsync);
+
+    private async Task SearchCommandAsync(string videoUrl)
     {
         CurrentState = StateContainerStates.Youtube.Loading;
 
@@ -43,5 +44,54 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
         }
     }
 
-    private bool IsPlaylistUrl(string url) => Regex.IsMatch(url, isYoututbePlaylistPattern);
+    private async Task DownloadCommandAsync()
+    {
+        CurrentState = StateContainerStates.Youtube.Loading;
+
+        try
+        {
+            var tasks = new Task[SearchResults.Count];
+            using var semaphoreSlim = new SemaphoreSlim(4);
+
+            for (int i = 0; i < SearchResults.Count; ++i)
+            {
+                var searchResult = SearchResults[i - 1];
+
+                if (!searchResult.Download)
+                {
+                    continue;
+                }
+
+                async Task DownloadAsync()
+                {
+                    try
+                    {
+                        if (searchResult.OnlyAudio)
+                        {
+                            await youtubeService.DownloadAudioAsync(searchResult.Url);
+                        }
+                        else
+                        {
+                            await youtubeService.DownloadVideoAsync(searchResult.Url);
+                        }
+                    }
+                    finally
+                    {
+                        semaphoreSlim.Release();
+                    }
+                }
+
+                await semaphoreSlim.WaitAsync();
+                tasks[i] = DownloadAsync();
+            }
+
+            await Task.WhenAll(tasks);
+
+            CurrentState = StateContainerStates.Youtube.Success;
+        }
+        catch
+        {
+			CurrentState = StateContainerStates.Youtube.Error;
+		}
+    }
 }
