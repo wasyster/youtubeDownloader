@@ -32,7 +32,7 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
 
         try
         {
-            var playLists = await youtubeService.DownloadAsync(videoUrl);
+            var playLists = await youtubeService.GetVideosDataAsync(videoUrl);
             SearchResults = playLists.Select(x => new SearchResult(x)).ToObservableCollection();
 
             CurrentState = StateContainerStates.Youtube.Success;
