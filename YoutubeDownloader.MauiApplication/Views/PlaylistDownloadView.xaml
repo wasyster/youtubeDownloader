@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:YoutubeDownloader.Validation.Converters;assembly=YoutubeDownloader.Validation"
+             xmlns:viewModel="clr-namespace:YoutubeDownloader.MauiApplication.ViewModels"
+             xmlns:component="clr-namespace:YoutubeDownloader.MauiApplication.Components"
+             xmlns:model="clr-namespace:YoutubeDownloader.MauiApplication.Models"
+             x:Class="YoutubeDownloader.MauiApplication.Views.PlaylistDownloadView"
+             x:DataType="viewModel:PlaylistDownloadViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout VerticalOptions="FillAndExpand">
+        <SearchBar x:Name="searchBar" 
+                   Placeholder="youtube.com video link"
+                   SearchCommand="{Binding SearchCommand}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
+
+        <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand">
+            <toolkit:StateContainer.StateViews>
+                <VerticalStackLayout toolkit:StateView.StateKey="Loading">
+                    <ActivityIndicator IsRunning="True" />
+                    <Label Text="Loading Content..." />
+                </VerticalStackLayout>
+
+                <Label toolkit:StateView.StateKey="Error"
+                       Text="Error occoured while on fatching the video(s)!" />
+
+                <Label toolkit:StateView.StateKey="NotAYoutubeVideoLink"
+                       Text="Not a youtube link!" />
+
+                <Label toolkit:StateView.StateKey="Empty"
+                       Text="Youtube link not entered!" />
+
+                <ScrollView toolkit:StateView.StateKey="Success">
+                    <CollectionView ItemsSource="{Binding SearchResults}"
+                                   Margin="0,15,0,25">
+                        <CollectionView.Header>
+                            <Label Text="Found video(s)" FontSize="20" FontAttributes="Bold"
+                                   HorizontalOptions="Center" 
+                                   Margin="0,0,0,20"/>
+                        </CollectionView.Header>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:SearchResult">
+                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+            </toolkit:StateContainer.StateViews>
+        </Grid>
+    </StackLayout>
+
+</ContentPage>

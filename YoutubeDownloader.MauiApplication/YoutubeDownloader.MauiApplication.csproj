@@ -78,10 +78,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\FileDownloadView.xaml.cs">
+	    <DependentUpon>FileDownloadView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PlaylistDownloadView.xaml.cs">
+	    <DependentUpon>PlaylistDownloadView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SettingsView.xaml.cs">
+	    <DependentUpon>SettingsView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Components\SearchResultLineItemComponent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MainPage.xaml">
+	  <MauiXaml Update="Views\FileDownloadView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PlaylistDownloadView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SettingsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

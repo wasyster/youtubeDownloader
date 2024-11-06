@@ -1,9 +1,9 @@
 ﻿namespace YoutubeDownloader.MauiApplication.ViewModels;
 
-public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchModel
+public partial class FileDownloadViewModel(IYoutubeService youtubeService) : SearchModel
 {
     [ObservableProperty]
-    string currentState = StateContainerStates.Youtube.Empty;
+    private string currentState = StateContainerStates.Youtube.Empty;
 
     [ObservableProperty]
     private ObservableCollection<SearchResult> searchResults;
@@ -33,7 +33,7 @@ public partial class MainPageViewModel(IYoutubeService youtubeService) : SearchM
 
         try
         {
-            var playLists = await youtubeService.GetVideosDataAsync(videoUrl);
+            var playLists = await youtubeService.GetPlaylistDataAsync(videoUrl);
             SearchResults = playLists.Select(x => new SearchResult(x)).ToObservableCollection();
 
             CurrentState = StateContainerStates.Youtube.Success;
