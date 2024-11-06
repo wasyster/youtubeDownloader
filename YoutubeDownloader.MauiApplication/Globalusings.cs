@@ -21,3 +21,6 @@ global using CommunityToolkit.Maui.Core.Extensions;
 global using Microsoft.Maui.LifecycleEvents;
 global using YoutubeDownloader.MauiApplication.Views;
 global using YoutubeDownloader.MauiApplication.Controlls;
+global using Microsoft.Extensions.Configuration;
+global using YoutubeDownloader.Services.Database;
+global using YoutubeDownloader.Services.Youtube;

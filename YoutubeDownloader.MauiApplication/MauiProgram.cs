@@ -15,13 +15,18 @@ public static class MauiProgram
                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                });
 
+		var dbSettings = builder.Configuration.GetRequiredSection("DBSettings").Get<DBSettings>();
+		builder.Services.AddSingleton<DBSettings>(dbSettings);
+
 		builder.Services.AddTransient<FileDownloadViewModel>();
 		builder.Services.AddTransient<PlaylistDownloadViewModel>();
+        builder.Services.AddTransient<SettingsViewModel>();
 
 		builder.Services.AddTransient<FileDownloadView>();
 		builder.Services.AddTransient<PlaylistDownloadView>();
+		builder.Services.AddTransient<SettingsView>();
 
-        builder.Services.AddTransient<YoutubeClient>();
+		builder.Services.AddTransient<YoutubeClient>();
         builder.Services.AddTransient<IYoutubeService, YoutubeService>();
 
 #if WINDOWS

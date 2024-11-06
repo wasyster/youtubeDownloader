@@ -1,4 +1,6 @@
-﻿namespace YoutubeDownloader.MauiApplication.ViewModels;
+﻿using YoutubeDownloader.Services.Youtube;
+
+namespace YoutubeDownloader.MauiApplication.ViewModels;
 
 public partial class FileDownloadViewModel(IYoutubeService youtubeService) : SearchModel
 {
