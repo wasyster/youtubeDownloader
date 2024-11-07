@@ -2,24 +2,70 @@
 
 public partial class App : Application
 {
-	const int DefaultWidth = 500;
-	const int DefaultHeight = 1000;
+	private const int DefaultWidth = 500;
+	private const int DefaultHeight = 1000;
 
-	public App()
+    private readonly IDbContextService<SettingsModel> dbSettingsContext;
+
+
+    public App(IDbContextService<SettingsModel> dbSettingsContext)
     {
-        InitializeComponent();
+        this.dbSettingsContext = dbSettingsContext;
 
+        InitializeComponent();
         MainPage = new AppShell();
     }
 
-	protected override Window CreateWindow(IActivationState activationState)
+    protected override async void OnStart()
+    {
+        base.OnStart();
+
+        var getSettingsTask = CreateIfNotExistsSttingsAsync();
+
+        await getSettingsTask.ContinueWith((task) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => MainPage = new AppShell());
+        });
+
+
+    }
+
+    protected override Window CreateWindow(IActivationState activationState)
 	{
 		Window window = base.CreateWindow(activationState);
-		window.Activated += WindowActivated;
+		window.Activated += WindowActivatedAsync;
 		return window;
 	}
 
-	private async void WindowActivated(object sender, EventArgs e)
+    private async Task CreateIfNotExistsSttingsAsync()
+    {
+        var settings = await dbSettingsContext.GetAsync(DatabeseKeys.Settings);
+
+        if (settings is not null)
+        {
+            return;
+        }
+
+        FolderPickerResult result = null;
+
+        do
+        {
+            result = await FolderPicker.Default.PickAsync();
+            if (!result.IsSuccessful)
+            {
+                await Toast.Make($"The folder was not picked").Show();
+                await Task.Delay(1000);
+            }
+            else
+            {
+                await dbSettingsContext.CreateOrUpdateIfExistsAsync(new SettingsModel(result));
+            }
+        }
+        while (!result.IsSuccessful);
+    }
+
+
+    private async void WindowActivatedAsync(object sender, EventArgs e)
 	{
 #if WINDOWS
         var window = sender as Window;

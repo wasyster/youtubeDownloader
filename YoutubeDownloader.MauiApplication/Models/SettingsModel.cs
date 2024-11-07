@@ -5,5 +5,15 @@ public partial class SettingsModel : ObservableObject, IEntity
     public string Id { get;  set; }
 
     [ObservableProperty]
-	private string saveFolder;
+	private FolderPickerResult saveFolder;
+
+    public SettingsModel()
+    {
+        this.Id = DatabeseKeys.Settings;
+    }
+
+    public SettingsModel(FolderPickerResult saveFolder): this()
+    {
+        this.SaveFolder = saveFolder;
+    }
 }

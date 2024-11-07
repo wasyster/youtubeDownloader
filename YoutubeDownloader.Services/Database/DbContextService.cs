@@ -25,7 +25,7 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 		await context.CreateTableAsync<SqlRecord>();
 	}
 
-	public async Task<bool> SaveAsync(IEntity item)
+	public async Task<bool> CreateAsync(IEntity item)
 	{
 		if (item == null) return false;
 
@@ -47,7 +47,7 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 		return result > 0;
 	}
 
-	public async Task<bool> UpdateifExistsAsync(IEntity item)
+	public async Task<bool> UpdateIfExistsAsync(IEntity item)
 
     {
 		if (item == null || string.IsNullOrEmpty(item.Id)) return false;
@@ -63,7 +63,28 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 		return false;
 	}
 
-	public async Task<bool> UpdateOrSaveAsync(IEntity item)
+    public async Task<bool> CreateOrUpdateIfExistsAsync(IEntity item)
+
+    {
+        if (item == null || string.IsNullOrEmpty(item.Id)) return false;
+
+        await InitDB();
+
+        var project = await GetAsync(item.Id);
+
+        if (project is not null)
+        {
+            return await UpdateAsync(item);
+        }
+		else if (project is null)
+		{
+			return await CreateAsync(item);
+        }
+
+        return false;
+    }
+
+    public async Task<bool> UpdateOrSaveAsync(IEntity item)
 	{
 		if (item == null || string.IsNullOrEmpty(item.Id)) return false;
 
@@ -73,7 +94,7 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 
 		if (record == null)
 		{
-			return await SaveAsync(record);
+			return await CreateAsync(record);
 		}
 		else
 		{

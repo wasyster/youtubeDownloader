@@ -11,9 +11,10 @@ public class SqlRecord
     {
         
     }
+
     public SqlRecord(IEntity entity)
 	{
-		this.Id = entity.Id;
-		this.JsonContent = JsonSerializer.Serialize(entity);
+        this.Id = entity.Id;
+		this.JsonContent = JsonSerializer.Serialize((object)entity);
 	}
 }
