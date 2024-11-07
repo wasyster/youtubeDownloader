@@ -7,7 +7,6 @@ public partial class App : Application
 
     private readonly IDbContextService<SettingsModel> dbSettingsContext;
 
-
     public App(IDbContextService<SettingsModel> dbSettingsContext)
     {
         this.dbSettingsContext = dbSettingsContext;
@@ -63,7 +62,6 @@ public partial class App : Application
         }
         while (!result.IsSuccessful);
     }
-
 
     private async void WindowActivatedAsync(object sender, EventArgs e)
 	{

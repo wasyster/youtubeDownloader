@@ -1,4 +1,4 @@
-﻿namespace YoutubeDownloader.MauiApplication.Models;
+﻿namespace YoutubeDownloader.Shared.Models;
 
 public partial class SearchResult : ObservableObject, IVideo
 {

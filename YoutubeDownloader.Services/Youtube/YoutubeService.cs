@@ -1,6 +1,6 @@
 ﻿namespace YoutubeDownloader.Services.Youtube;
 
-public class YoutubeService(YoutubeClient youtubeClient) : IYoutubeService
+public class YoutubeService(YoutubeClient youtubeClient, IDbContextService<SettingsModel> dbSettingsContext) : IYoutubeService
 {
     public async Task<IVideo> GetVideoDataAsync(string videoURL)
     {

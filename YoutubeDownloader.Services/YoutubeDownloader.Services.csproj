@@ -44,4 +44,8 @@
 		<PackageReference Include="YoutubeExplode.Converter" Version="6.4.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\YoutubeDownloader.Shared\YoutubeDownloader.Shared.csproj" />
+	</ItemGroup>
+
 </Project>

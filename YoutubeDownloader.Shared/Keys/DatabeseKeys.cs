@@ -1,4 +1,4 @@
-﻿namespace YoutubeDownloader.Services.Database;
+﻿namespace YoutubeDownloader.Shared.Models.Keys;
 
 public static class DatabeseKeys
 {

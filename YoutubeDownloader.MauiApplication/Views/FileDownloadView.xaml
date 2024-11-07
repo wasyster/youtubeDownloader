@@ -5,7 +5,7 @@
              xmlns:converters="clr-namespace:YoutubeDownloader.Validation.Converters;assembly=YoutubeDownloader.Validation"
              xmlns:viewModel="clr-namespace:YoutubeDownloader.MauiApplication.ViewModels"
              xmlns:component="clr-namespace:YoutubeDownloader.MauiApplication.Components"
-             xmlns:model="clr-namespace:YoutubeDownloader.MauiApplication.Models"
+             xmlns:model="clr-namespace:YoutubeDownloader.Shared.Models;assembly=YoutubeDownloader.Shared"
              x:Class="YoutubeDownloader.MauiApplication.Views.FileDownloadView"
              x:DataType="viewModel:FileDownloadViewModel">
 

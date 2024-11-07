@@ -1,0 +1,9 @@
+﻿global using CommunityToolkit.Mvvm.ComponentModel;
+global using YoutubeDownloader.Validation;
+global using YoutubeDownloader.Validation.Rules;
+global using System.Diagnostics.CodeAnalysis;
+global using YoutubeExplode.Common;
+global using YoutubeExplode.Videos;
+global using CommunityToolkit.Maui.Storage;
+global using YoutubeDownloader.Shared.Models.Interfaces;
+global using YoutubeDownloader.Shared.Models.Keys;

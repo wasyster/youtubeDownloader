@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeDownloader.Services"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeDownloader.Validation", "YoutubeDownloader.Validation\YoutubeDownloader.Validation.csproj", "{DD56F40B-8178-4030-8DB3-2E459EDA78DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeDownloader.MauiApplication", "YoutubeDownloader.MauiApplication\YoutubeDownloader.MauiApplication.csproj", "{F4F15876-70C5-44F0-A61C-5BB8DC6358B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeDownloader.MauiApplication", "YoutubeDownloader.MauiApplication\YoutubeDownloader.MauiApplication.csproj", "{F4F15876-70C5-44F0-A61C-5BB8DC6358B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeDownloader.Shared", "YoutubeDownloader.Shared\YoutubeDownloader.Shared.csproj", "{66FA5AED-A0F4-4251-AC95-709A22FC72BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{F4F15876-70C5-44F0-A61C-5BB8DC6358B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4F15876-70C5-44F0-A61C-5BB8DC6358B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4F15876-70C5-44F0-A61C-5BB8DC6358B1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{66FA5AED-A0F4-4251-AC95-709A22FC72BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66FA5AED-A0F4-4251-AC95-709A22FC72BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66FA5AED-A0F4-4251-AC95-709A22FC72BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66FA5AED-A0F4-4251-AC95-709A22FC72BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
