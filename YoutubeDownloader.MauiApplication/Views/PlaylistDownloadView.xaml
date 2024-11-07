@@ -25,7 +25,12 @@
             <Label Text="Select all"
                    VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"
                    HorizontalTextAlignment="Start"/>
-            <CheckBox IsChecked="{Binding SelectAll}" HorizontalOptions="End"/>
+            <CheckBox IsChecked="{Binding SelectAll}" HorizontalOptions="End">
+                <CheckBox.Behaviors>
+                    <toolkit:EventToCommandBehavior EventName="CheckedChanged"
+                                                    Command="{Binding MarkAllCommand}"/>
+                </CheckBox.Behaviors>
+            </CheckBox>
         </StackLayout>
 
         <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand">
@@ -61,7 +66,10 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:SearchResult">
-                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
+                                <component:SearchResultLineItemComponent Download="{Binding Download}"
+                                                                         Title="{Binding Title}"
+                                                                         Thumbnail="{Binding Thumbnail}"
+                                                                         OnlyAudio="{Binding OnlyAudio}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

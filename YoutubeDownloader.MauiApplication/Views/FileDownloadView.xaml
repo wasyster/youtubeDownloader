@@ -38,22 +38,7 @@
                        Text="Youtube link not entered!" />
 
                 <ScrollView toolkit:StateView.StateKey="Success">
-                    <CollectionView ItemsSource="{Binding SearchResults}"
-                                   Margin="0,15,0,25">
-                        <CollectionView.Header>
-                            <Label Text="Found video(s)" FontSize="20" FontAttributes="Bold"
-                                   HorizontalOptions="Center" 
-                                   Margin="0,0,0,20"/>
-                        </CollectionView.Header>
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="model:SearchResult">
-                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+
                 </ScrollView>
             </toolkit:StateContainer.StateViews>
         </Grid>

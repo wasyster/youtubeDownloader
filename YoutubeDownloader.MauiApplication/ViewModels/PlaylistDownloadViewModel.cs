@@ -17,7 +17,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
     public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadCommandAsync);
 
-    private async Task SearchCommandAsync(string videoUrl)
+	public RelayCommand MarkAllCommand => new RelayCommand(MarkAll);
+
+	private async Task SearchCommandAsync(string videoUrl)
     {
         CurrentState = StateContainerStates.Youtube.Loading;
 
@@ -96,5 +98,13 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         {
 			CurrentState = StateContainerStates.Youtube.Error;
 		}
+    }
+
+    private void MarkAll()
+    {
+        foreach(var searcResult in this.SearchResults)
+        {
+            searcResult.Download = this.SelectAll;
+        }
     }
 }
