@@ -5,20 +5,20 @@
              x:Class="YoutubeDownloader.MauiApplication.Components.SearchResultLineItemComponent"
              x:Name="this">
     <HorizontalStackLayout>
-        <CheckBox IsChecked="{Binding Download, Source={x:Reference this}}"
+        <CheckBox IsChecked="{Binding SearchResult.Download, Source={x:Reference this}}"
                   VerticalOptions="Center" HorizontalOptions="Center"/>
 
         <VerticalStackLayout>
             <Label 
-                Text="{Binding Title, Source={x:Reference this}}"
+                Text="{Binding SearchResult.Title, Source={x:Reference this}}"
                 VerticalOptions="Center" 
                 HorizontalOptions="Start" />
             <HorizontalStackLayout>
-                <Image Source="{Binding Thumbnail, Source={x:Reference this}}" 
+                <Image Source="{Binding SearchResult.Thumbnail, Source={x:Reference this}}" 
                        WidthRequest="100"
                        HorizontalOptions="Start"/>
                 <VerticalStackLayout Margin="20,20,0,0">
-                    <controlls:OnlyAudioSwitch IsToggled="{Binding OnlyAudio, Source={x:Reference this}}"/>
+                    <controlls:OnlyAudioSwitch IsToggled="{Binding SearchResult.OnlyAudio, Source={x:Reference this}}"/>
                 </VerticalStackLayout>
             </HorizontalStackLayout>
         </VerticalStackLayout>

@@ -66,10 +66,7 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:SearchResult">
-                                <component:SearchResultLineItemComponent Download="{Binding Download}"
-                                                                         Title="{Binding Title}"
-                                                                         Thumbnail="{Binding Thumbnail}"
-                                                                         OnlyAudio="{Binding OnlyAudio}"/>
+                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
