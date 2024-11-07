@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace YoutubeDownloader.Services.Database;
+﻿namespace YoutubeDownloader.Services.Database;
 
 public class DbContextService<T> : IDbContextService<T> where T : class, IEntity, new()
 {
@@ -50,12 +48,13 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 	}
 
 	public async Task<bool> UpdateifExistsAsync(IEntity item)
-	{
-		if (item == null || item.Data == null || string.IsNullOrEmpty(item.Data.Id)) return false;
+
+    {
+		if (item == null || string.IsNullOrEmpty(item.Id)) return false;
 
 		await InitDB();
 
-		var project = await GetAsync(item.Data.Id);
+		var project = await GetAsync(item.Id);
 
 		if (project != null)
 		{
@@ -66,23 +65,23 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 
 	public async Task<bool> UpdateOrSaveAsync(IEntity item)
 	{
-		if (item == null || item.Data == null || string.IsNullOrEmpty(item.Data.Id)) return false;
+		if (item == null || string.IsNullOrEmpty(item.Id)) return false;
 
 		await InitDB();
 
-		var project = await GetAsync(item.Data.Id);
+		var record = await GetAsync(item.Id);
 
-		if (project == null)
+		if (record == null)
 		{
-			return await SaveAsync(item);
+			return await SaveAsync(record);
 		}
 		else
 		{
-			return await UpdateAsync(item);
+			return await UpdateAsync(record);
 		}
 	}
 
-	public async Task<T> GetAsync(string id) where T : class
+	public async Task<T> GetAsync(string id)
 	{
 		await InitDB();
 
@@ -93,49 +92,39 @@ public class DbContextService<T> : IDbContextService<T> where T : class, IEntity
 			return null;
 
 		using var stream = new MemoryStream(Encoding.UTF8.GetBytes(record.JsonContent));
-		var project = await System.Text.Json.JsonSerializer.DeserializeAsync<ProjectEntity>(stream);
+		var item = await JsonSerializer.DeserializeAsync<T>(stream);
 
-		return project;
+		return item;
 	}
 
-	public async Task<List<ProjectEntity>> GetItemsAsync()
+	public async Task<List<T>> GetItemsAsync()
 	{
-		var data = new List<ProjectEntity>();
+		var data = new List<T>();
 
 		await InitDB();
 
 		var records = await context.Table<SqlRecord>().ToListAsync();
 
-		if (!records.Any())
-			return data;
-
-		var settings = new JsonSerializerSettings
+		if (records.Count == 0)
 		{
-			MissingMemberHandling = MissingMemberHandling.Error
-		};
+			return data;
+		}
 
 		foreach (var record in records)
 		{
 			using var stream = new MemoryStream(Encoding.UTF8.GetBytes(record.JsonContent));
-			try
-			{
-				var project = JsonConvert.DeserializeObject<ProjectEntity>(record.JsonContent, settings);
-				data.Add(project);
-			}
-			catch (JsonSerializationException ex)
-			{
-				Console.WriteLine($"JSON serialization error: {ex.Message}");
-			}
+            var item = await JsonSerializer.DeserializeAsync<T>(stream);
+			data.Add(item);
 		}
 
 		return data;
 	}
 
-	public async Task<bool> DeleteAsync(ProjectEntity item)
+	public async Task<bool> DeleteAsync(IEntity item)
 	{
 		await InitDB();
 
-		var deletedObjectsCount = await context.DeleteAsync<SqlRecord>(item.Data.Id);
+		var deletedObjectsCount = await context.DeleteAsync<SqlRecord>(item.Id);
 
 		return deletedObjectsCount > 0;
 	}

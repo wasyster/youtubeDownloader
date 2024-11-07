@@ -9,6 +9,7 @@ public static class MauiProgram
                .UseMauiCommunityToolkit()
                .UseMauiCommunityToolkitMarkup()
                .UseCupertinoMauiIcons()
+               .USeAppSettingFromJson()
                .ConfigureFonts(fonts =>
                {
                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -28,6 +29,7 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<YoutubeClient>();
         builder.Services.AddTransient<IYoutubeService, YoutubeService>();
+        builder.Services.AddTransient<IDbContextService<SettingsModel>, DbContextService<SettingsModel>>();
 
 #if WINDOWS
         //full screen
@@ -68,7 +70,7 @@ public static class MauiProgram
 #endif
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
         return builder.Build();

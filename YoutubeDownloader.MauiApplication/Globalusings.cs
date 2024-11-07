@@ -24,3 +24,5 @@ global using YoutubeDownloader.MauiApplication.Controlls;
 global using Microsoft.Extensions.Configuration;
 global using YoutubeDownloader.Services.Database;
 global using YoutubeDownloader.Services.Youtube;
+global using System.Reflection;
+global using YoutubeDownloader.MauiApplication.AppConfigurations;
