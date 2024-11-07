@@ -33,7 +33,7 @@
             </CheckBox>
         </StackLayout>
 
-        <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand">
+        <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand" Margin="0">
             <toolkit:StateContainer.StateViews>
                 <VerticalStackLayout toolkit:StateView.StateKey="Loading">
                     <ActivityIndicator IsRunning="True"/>
@@ -66,13 +66,26 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:SearchResult">
-                                <component:SearchResultLineItemComponent SearchResult="{Binding .}" />
+                                <component:SearchResultLineItemComponent SearchResult="{Binding .}"
+                                                                         SelectedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewModel:PlaylistDownloadViewModel}}, Path=OnSelectCommand}"/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </ScrollView>
             </toolkit:StateContainer.StateViews>
         </Grid>
+        <FlexLayout AlignItems="End" JustifyContent="End" Wrap="NoWrap" Margin="0,0,10,10">
+            <Button AbsoluteLayout.LayoutBounds="0.90,0.99,60,60"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    CornerRadius="50"
+                    HeightRequest="60" WidthRequest="60"
+                    ImageSource="download.png"
+                    BackgroundColor="LightGray"
+                    BorderColor="White"
+                    IsVisible="{Binding CanDownload}"
+                    Command="{Binding DownloadCommand}">
+            </Button>
+        </FlexLayout>
     </StackLayout>
 
 </ContentPage>

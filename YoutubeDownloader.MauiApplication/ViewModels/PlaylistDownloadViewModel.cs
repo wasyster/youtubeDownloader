@@ -11,13 +11,18 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
     [ObservableProperty]
     private bool selectAll;
 
-    private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
+    [ObservableProperty]
+    private bool canDownload = false;
+
+	private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);
 
     public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadCommandAsync);
 
-	public RelayCommand MarkAllCommand => new RelayCommand(MarkAll);
+	public IRelayCommand MarkAllCommand => new RelayCommand(MarkAll);
+
+	public IRelayCommand OnSelectCommand => new RelayCommand(OnSelect);
 
 	private async Task SearchCommandAsync(string videoUrl)
     {
@@ -51,6 +56,13 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
     private async Task DownloadCommandAsync()
     {
+        var hasSelectedItems = SearchResults.Any(x => x.Download);
+
+        if(!hasSelectedItems)
+        {
+            return;
+        }
+
         CurrentState = StateContainerStates.Youtube.Loading;
 
         try
@@ -106,5 +118,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         {
             searcResult.Download = this.SelectAll;
         }
-    }
+
+        CanDownload = this.SelectAll;
+	}
+
+    private void OnSelect() => this.CanDownload = this.SearchResults.Any(x => x.Download);
 }

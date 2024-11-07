@@ -2,11 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controlls="clr-namespace:YoutubeDownloader.MauiApplication.Controlls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="YoutubeDownloader.MauiApplication.Components.SearchResultLineItemComponent"
              x:Name="this">
     <HorizontalStackLayout>
         <CheckBox IsChecked="{Binding SearchResult.Download, Source={x:Reference this}}"
-                  VerticalOptions="Center" HorizontalOptions="Center"/>
+                  VerticalOptions="Center" HorizontalOptions="Center">
+            <CheckBox.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="CheckedChanged"
+                                                Command="{Binding SelectedCommand,Source={x:Reference this}}"/>
+            </CheckBox.Behaviors>
+        </CheckBox>
 
         <VerticalStackLayout>
             <Label 
