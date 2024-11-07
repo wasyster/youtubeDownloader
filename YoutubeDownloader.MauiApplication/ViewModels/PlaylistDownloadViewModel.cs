@@ -1,4 +1,6 @@
-﻿namespace YoutubeDownloader.MauiApplication.ViewModels;
+﻿using System.Threading;
+
+namespace YoutubeDownloader.MauiApplication.ViewModels;
 
 public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) : SearchModel
 {
@@ -56,9 +58,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
     private async Task DownloadCommandAsync()
     {
-        var hasSelectedItems = SearchResults.Any(x => x.Download);
+		var hasSelectedElements = SearchResults?.Any(x => x.Download) ?? false;
 
-        if(!hasSelectedItems)
+		if (!hasSelectedElements)
         {
             return;
         }
@@ -66,43 +68,27 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         CurrentState = StateContainerStates.Youtube.Loading;
 
         try
-        {
-            var tasks = new Task[SearchResults.Count];
-            using var semaphoreSlim = new SemaphoreSlim(4);
+        {   
+			var parallelOptions = new ParallelOptions()
+			{
+				MaxDegreeOfParallelism = 4,
+				CancellationToken = new CancellationToken(),
+			};
 
-            for (int i = 0; i < SearchResults.Count; ++i)
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                var searchResult = SearchResults[i - 1];
-
-                if (!searchResult.Download)
+                await Parallel.ForEachAsync(SearchResults, parallelOptions, async (searchResult, ct) =>
                 {
-                    continue;
-                }
-
-                async Task DownloadAsync()
-                {
-                    try
+                    if (searchResult.OnlyAudio)
                     {
-                        if (searchResult.OnlyAudio)
-                        {
-                            await youtubeService.DownloadAudioAsync(searchResult.Url);
-                        }
-                        else
-                        {
-                            await youtubeService.DownloadVideoAsync(searchResult.Url);
-                        }
+                        await youtubeService.DownloadAudioAsync(searchResult.Url);
                     }
-                    finally
+                    else
                     {
-                        semaphoreSlim.Release();
+                        await youtubeService.DownloadVideoAsync(searchResult.Url);
                     }
-                }
-
-                await semaphoreSlim.WaitAsync();
-                tasks[i] = DownloadAsync();
-            }
-
-            await Task.WhenAll(tasks);
+                });
+            });
 
             CurrentState = StateContainerStates.Youtube.Success;
         }

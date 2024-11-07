@@ -81,7 +81,7 @@
                     HeightRequest="60" WidthRequest="60"
                     ImageSource="download.png"
                     BackgroundColor="LightGray"
-                    BorderColor="White"
+                    BorderColor="Black" BorderWidth="2"
                     IsVisible="{Binding CanDownload}"
                     Command="{Binding DownloadCommand}">
             </Button>
