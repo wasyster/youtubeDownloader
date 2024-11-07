@@ -21,21 +21,32 @@
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
 
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Label Text="Select all"
+                   VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"
+                   HorizontalTextAlignment="Start"/>
+            <CheckBox IsChecked="{Binding SelectAll}" HorizontalOptions="End"/>
+        </StackLayout>
+
         <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand">
             <toolkit:StateContainer.StateViews>
                 <VerticalStackLayout toolkit:StateView.StateKey="Loading">
-                    <ActivityIndicator IsRunning="True" />
-                    <Label Text="Loading Content..." />
+                    <ActivityIndicator IsRunning="True"/>
+                    <Label Text="Loading Content..." 
+                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                 </VerticalStackLayout>
 
                 <Label toolkit:StateView.StateKey="Error"
-                       Text="Error occoured while on fatching the video(s)!" />
+                       Text="Error occoured while on fatching the video(s)!" 
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
 
                 <Label toolkit:StateView.StateKey="NotAYoutubeVideoLink"
-                       Text="Not a youtube link!" />
+                       Text="Not a youtube link!" 
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
 
                 <Label toolkit:StateView.StateKey="Empty"
-                       Text="Youtube link not entered!" />
+                       Text="Youtube link not entered!"
+                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
                 <ScrollView toolkit:StateView.StateKey="Success">
                     <CollectionView ItemsSource="{Binding SearchResults}"

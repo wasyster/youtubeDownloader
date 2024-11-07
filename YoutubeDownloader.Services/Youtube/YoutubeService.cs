@@ -16,19 +16,29 @@ public class YoutubeService(YoutubeClient youtubeClient, IDbContextService<Setti
 
     public async Task DownloadVideoAsync(string videoURL)
     {
+        var filePath = await GetFilePathAsync();
         var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
 
         var streamInfo = streamManifest.GetVideoOnlyStreams()
                                     .Where(s => s.Container == Container.Mp4)
                                     .GetWithHighestVideoQuality();
 
-        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, $"video.{streamInfo.Container}");
+        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, filePath);
     }
 
     public async Task DownloadAudioAsync(string videoURL)
     {
+        var filePath = await GetFilePathAsync();
+
         var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
         var streamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
-        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, $"video.{streamInfo.Container}");
+        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, filePath);
+    }
+
+    private async Task<string> GetFilePathAsync()
+    {
+        var settings = await dbSettingsContext.GetAsync(DatabeseKeys.Settings);
+
+        return settings?.SaveFolder?.Folder?.Path!;
     }
 }

@@ -8,6 +8,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
     [ObservableProperty]
     private ObservableCollection<SearchResult> searchResults;
 
+    [ObservableProperty]
+    private bool selectAll;
+
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);

@@ -8,3 +8,4 @@ global using YoutubeExplode.Videos;
 global using YoutubeExplode.Videos.Streams;
 global using YoutubeDownloader.Shared.Models;
 global using YoutubeDownloader.Shared.Models.Interfaces;
+global using YoutubeDownloader.Shared.Models.Keys;
