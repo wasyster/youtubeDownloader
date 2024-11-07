@@ -14,31 +14,36 @@ public class YoutubeService(YoutubeClient youtubeClient, IDbContextService<Setti
         return playlist;
     }
 
-    public async Task DownloadVideoAsync(string videoURL)
+    public async Task DownloadVideoAsync(string videoURL, string fileName)
     {
-        var filePath = await GetFilePathAsync();
-        var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
+		var normalizedFileName = await GetFilePathAsync(fileName, "mp4");
+
+		var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
 
         var streamInfo = streamManifest.GetVideoOnlyStreams()
                                     .Where(s => s.Container == Container.Mp4)
                                     .GetWithHighestVideoQuality();
 
-        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, filePath);
+        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, normalizedFileName);
     }
 
-    public async Task DownloadAudioAsync(string videoURL)
+    public async Task DownloadAudioAsync(string videoURL, string fileName)
     {
-        var filePath = await GetFilePathAsync();
+		var normalizedFileName = await GetFilePathAsync(fileName, "mp3");
 
-        var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
+		var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
         var streamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
-        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, filePath);
+        await youtubeClient.Videos.Streams.DownloadAsync(streamInfo, normalizedFileName);
     }
 
-    private async Task<string> GetFilePathAsync()
+    private async Task<string> GetFilePathAsync(string fileName, string extension)
     {
         var settings = await dbSettingsContext.GetAsync(DatabeseKeys.Settings);
 
-        return settings?.SaveFolder?.Folder?.Path!;
-    }
+		var root = settings?.SaveFolder?.Folder?.Path!;
+        var normalizedFileName = fileName.Replace('"', ' ').Replace('|', ' ').Replace('?', ' ').Replace(@"/", "");
+		var fullPath = $"{root}/{normalizedFileName}.{extension}";
+
+		return fullPath;
+	}
 }

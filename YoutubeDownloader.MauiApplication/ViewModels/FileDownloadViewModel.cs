@@ -68,11 +68,11 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
                     {
                         if (searchResult.OnlyAudio)
                         {
-                            await youtubeService.DownloadAudioAsync(searchResult.Url);
+                            await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
                         }
                         else
                         {
-                            await youtubeService.DownloadVideoAsync(searchResult.Url);
+                            await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
                         }
                     }
                     finally

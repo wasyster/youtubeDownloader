@@ -2,8 +2,8 @@
 
 public interface IYoutubeService
 {
-    Task DownloadAudioAsync(string videoURL);
-    Task DownloadVideoAsync(string videoURL);
+    Task DownloadAudioAsync(string videoURL, string fileName);
+    Task DownloadVideoAsync(string videoURL, string fileName);
     Task<IReadOnlyCollection<IVideo>> GetPlaylistDataAsync(string videoURL);
     Task<IVideo> GetVideoDataAsync(string videoURL);
 }

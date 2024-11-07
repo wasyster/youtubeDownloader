@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace YoutubeDownloader.MauiApplication.ViewModels;
+﻿namespace YoutubeDownloader.MauiApplication.ViewModels;
 
 public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) : SearchModel
 {
@@ -16,11 +14,14 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
     [ObservableProperty]
     private bool canDownload = false;
 
+	[ObservableProperty]
+	private bool canSelectAll = false;
+
 	private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);
 
-    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadCommandAsync);
+    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadAsync);
 
 	public IRelayCommand MarkAllCommand => new RelayCommand(MarkAll);
 
@@ -29,8 +30,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 	private async Task SearchCommandAsync(string videoUrl)
     {
         CurrentState = StateContainerStates.Youtube.Loading;
+		CanSelectAll = false;
 
-        if (!IsModelValid())
+		if (!IsModelValid())
         {
             CurrentState = StateContainerStates.Youtube.Empty;
             return;
@@ -54,9 +56,11 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         {
             CurrentState = StateContainerStates.Youtube.Error;
         }
+
+        CanSelectAll = true;
     }
 
-    private async Task DownloadCommandAsync()
+    private async Task DownloadAsync()
     {
 		var hasSelectedElements = SearchResults?.Any(x => x.Download) ?? false;
 
@@ -64,8 +68,6 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         {
             return;
         }
-
-        CurrentState = StateContainerStates.Youtube.Loading;
 
         try
         {   
@@ -75,20 +77,22 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 				CancellationToken = new CancellationToken(),
 			};
 
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await Parallel.ForEachAsync(SearchResults, parallelOptions, async (searchResult, ct) =>
-                {
-                    if (searchResult.OnlyAudio)
-                    {
-                        await youtubeService.DownloadAudioAsync(searchResult.Url);
-                    }
-                    else
-                    {
-                        await youtubeService.DownloadVideoAsync(searchResult.Url);
-                    }
-                });
-            });
+			CurrentState = StateContainerStates.Youtube.Downloading;
+
+            //await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
+            //         {
+            //             if (searchResult.OnlyAudio)
+            //             {
+            //                 await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
+            //             }
+            //             else
+            //             {
+            //                 await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
+            //             }
+            //         });
+
+            await Task.Delay(10000000);
+
 
             CurrentState = StateContainerStates.Youtube.Success;
         }

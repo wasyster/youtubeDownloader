@@ -21,7 +21,10 @@
                    SearchCommand="{Binding SearchCommand}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}" />
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand"
+                     BackgroundColor="DarkGray"
+                     Padding="5,0,0,5" Margin="1,1,1,0"
+                     IsVisible="{Binding CanSelectAll}">
             <Label Text="Select all"
                    VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"
                    HorizontalTextAlignment="Start"/>
@@ -35,9 +38,17 @@
 
         <Grid toolkit:StateContainer.CurrentState="{Binding CurrentState}" VerticalOptions="FillAndExpand" Margin="0">
             <toolkit:StateContainer.StateViews>
-                <VerticalStackLayout toolkit:StateView.StateKey="Loading">
+                <VerticalStackLayout toolkit:StateView.StateKey="Loading"
+                                     VerticalOptions="CenterAndExpand">
                     <ActivityIndicator IsRunning="True"/>
                     <Label Text="Loading Content..." 
+                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout toolkit:StateView.StateKey="Downloading"
+                                     VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="True"/>
+                    <Label Text="Downloading..." 
                            HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                 </VerticalStackLayout>
 
@@ -74,7 +85,7 @@
                 </ScrollView>
             </toolkit:StateContainer.StateViews>
         </Grid>
-        <FlexLayout AlignItems="End" JustifyContent="End" Wrap="NoWrap" Margin="0,0,10,10">
+        <FlexLayout AlignItems="End" JustifyContent="Center" Wrap="NoWrap" Margin="0,0,0,5">
             <Button AbsoluteLayout.LayoutBounds="0.90,0.99,60,60"
                     AbsoluteLayout.LayoutFlags="PositionProportional"
                     CornerRadius="50"
