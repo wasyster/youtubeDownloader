@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="YoutubeDownloader.MauiApplication.Views.SettingsView">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModel="clr-namespace:YoutubeDownloader.MauiApplication.ViewModels"
+             x:Class="YoutubeDownloader.MauiApplication.Views.SettingsView"
+             x:DataType="viewModel:SettingsViewModel">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing"/>
+    </ContentPage.Behaviors>
+
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label Text="SETTINGS"
+               VerticalOptions="Center" HorizontalOptions="Center" />
+
+        <BoxView HeightRequest="2" BackgroundColor="DarkGray" Margin="5,0,5,0" />
+
+        <StackLayout Orientation="Vertical" Margin="5">
+            <Label Text="Download Folder Path:" FontAttributes="Bold" />
+            <Label Text="{Binding Settings.SaveFolder.Folder.Path}" />
+            <Button Text="Chnage..."
+                    Command="{Binding ChangeDownloadFolderCommand}" 
+                    HorizontalOptions="End"
+                    Margin="0,5,5,5"/>
+        </StackLayout>
+
+        <BoxView HeightRequest="2" BackgroundColor="DarkGray" Margin="5,0,5,0" />
     </VerticalStackLayout>
 </ContentPage>
