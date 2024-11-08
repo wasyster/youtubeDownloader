@@ -17,15 +17,24 @@ public partial class SettingsViewModel(IDbContextService<SettingsModel> dbSettin
 
     private async Task ChangeDownloadFolderAsync()
     {
-        var result = await FolderPicker.Default.PickAsync();
-        if (!result.IsSuccessful)
+        try
         {
-            await Toast.Make($"The folder was not picked").Show();
-            await Task.Delay(1000);
+            var result = await FolderPicker.Default.PickAsync();
+            if (!result.IsSuccessful)
+            {
+                await Toast.Make($"The folder was not picked").Show();
+                await Task.Delay(1000);
+            }
+            else
+            {
+                await dbSettingsContext.CreateOrUpdateIfExistsAsync(new SettingsModel(result));
+                Settings.SaveFolder = result;
+            }
         }
-        else
+        catch
         {
-            await dbSettingsContext.CreateOrUpdateIfExistsAsync(new SettingsModel(result));
-        }
+			await Toast.Make($"Error occoured. Please try again.").Show();
+			await Task.Delay(1000);
+		}
     }
 }

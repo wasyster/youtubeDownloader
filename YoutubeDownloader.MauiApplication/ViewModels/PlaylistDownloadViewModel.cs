@@ -23,7 +23,7 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
     public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadAsync);
 
-	public IRelayCommand MarkAllCommand => new RelayCommand(MarkAll);
+	public IRelayCommand MarkAllCommand => new RelayCommand(MarkOrUnmarkAll);
 
 	public IRelayCommand OnSelectCommand => new RelayCommand(OnSelect);
 
@@ -84,7 +84,12 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
                     await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
             });
 
-            CurrentState = StateContainerStates.Youtube.Success;
+			foreach (var searcResult in this.SearchResults)
+			{
+				searcResult.Download = false;
+			}
+
+			CurrentState = StateContainerStates.Youtube.Success;
         }
         catch
         {
@@ -92,7 +97,7 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 		}
     }
 
-    private void MarkAll()
+    private void MarkOrUnmarkAll()
     {
         foreach(var searcResult in this.SearchResults)
         {
