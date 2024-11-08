@@ -80,16 +80,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 			CurrentState = StateContainerStates.Youtube.Downloading;
 
             await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
-                     {
-                         if (searchResult.OnlyAudio)
-                         {
-                             await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
-                         }
-                         else
-                         {
-                             await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
-                         }
-                     });
+            {
+                    await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
+            });
 
             CurrentState = StateContainerStates.Youtube.Success;
         }

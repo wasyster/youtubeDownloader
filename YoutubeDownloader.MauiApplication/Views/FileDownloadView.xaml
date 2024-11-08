@@ -36,12 +36,18 @@
                 <Label toolkit:StateView.StateKey="Empty"
                        Text="Youtube link not entered!" />
 
-                <StackLayout toolkit:StateView.StateKey="Success">
-                    <toolkit:MediaElement Source="{Binding VideoStream}"
-                                          ShouldShowPlaybackControls="True" 
-                                          Margin="1"/>
-                    <BoxView HeightRequest="2" BackgroundColor="DarkGray" Margin="5,0,5,15" />
+                <VerticalStackLayout toolkit:StateView.StateKey="Downloading"
+                                     VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsRunning="True"/>
+                    <Label Text="Downloading..." 
+                            HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                </VerticalStackLayout>
 
+                <StackLayout toolkit:StateView.StateKey="Success">
+                    <Image Source="{Binding VideoData.Thumbnail}" 
+                           HorizontalOptions="Start"
+                           Margin="5"/>
+                    <BoxView HeightRequest="2" BackgroundColor="DarkGray" Margin="5,0,5,15" />
 
                     <Label Text="Title :" FontAttributes="Bold" Margin="5" />
                     <Label Text="{Binding VideoData.Title}" Margin="5" />
@@ -58,10 +64,9 @@
                     <FlexLayout JustifyContent="SpaceAround" AlignItems="End"
                                 VerticalOptions="StartAndExpand"
                                 Margin="0,0,0,10">
-                        <Button Text="Dwonload Video" 
-                                HorizontalOptions="Center"/>
                         <Button Text="Dwonload Audio" 
-                                HorizontalOptions="Center"/>
+                                HorizontalOptions="Center"
+                                Command="{Binding DownloadAudioCommand}"/>
                     </FlexLayout>
                 </StackLayout>
             </toolkit:StateContainer.StateViews>

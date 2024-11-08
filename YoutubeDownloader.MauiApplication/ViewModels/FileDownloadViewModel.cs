@@ -9,13 +9,15 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
     private string videoStream;
 
     [ObservableProperty]
-    private Video videoData;
+    private SearchResult videoData;
 
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchAsync);
 
-    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadAsync);
+    public IAsyncRelayCommand DownloadAudioCommand => new AsyncRelayCommand(DownloadAudioAsync);
+
+    public IAsyncRelayCommand DownloadVideoCommand => new AsyncRelayCommand(DownloadVideoAsync);
 
     private async Task SearchAsync(string videoUrl)
     {
@@ -34,8 +36,9 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
 
         try
         {
-            VideoStream = await youtubeService.GetVideoStreamUrlAsync(videoUrl);
-            VideoData = await youtubeService.GetVideoDataAsync(videoUrl) as Video;
+            var data = await youtubeService.GetVideoDataAsync(videoUrl);
+            VideoURL.Value = videoUrl;
+            VideoData = new SearchResult(data);
 
             CurrentState = StateContainerStates.Youtube.Success;
         }
@@ -45,8 +48,35 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
         }
     }
 
-    private async Task DownloadAsync()
+    private async Task DownloadAudioAsync()
     {
+        CurrentState = StateContainerStates.Youtube.Downloading;
 
+        try
+        {
+            await youtubeService.DownloadAudioAsync(VideoURL.Value, VideoData.Title);
+        }
+        catch
+        {
+            CurrentState = StateContainerStates.Youtube.Error;
+        }
+
+        CurrentState = StateContainerStates.Youtube.Success;
+    }
+
+    private async Task DownloadVideoAsync()
+    {
+        CurrentState = StateContainerStates.Youtube.Downloading;
+
+        try
+        {
+            await youtubeService.DownloadVideoAsync(VideoURL.Value, VideoData.Title);
+        }
+        catch
+        {
+            CurrentState = StateContainerStates.Youtube.Error;
+        }
+
+        CurrentState = StateContainerStates.Youtube.Success;
     }
 }

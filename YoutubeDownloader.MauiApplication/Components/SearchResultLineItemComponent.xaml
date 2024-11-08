@@ -29,7 +29,6 @@
                     <Image Source="{Binding SearchResult.Thumbnail, Source={x:Reference this}}" 
                            WidthRequest="100"
                            HorizontalOptions="Start"/>
-                    <controlls:OnlyAudioSwitch IsToggled="{Binding SearchResult.OnlyAudio, Source={x:Reference this}}"/>
                 </VerticalStackLayout>
             </Grid>
         </HorizontalStackLayout>

@@ -41,9 +41,6 @@ public partial class SearchResult : ObservableObject, IVideo
     [ObservableProperty]
     private bool download;
 
-    [ObservableProperty]
-    private bool onlyAudio = true;
-
     public string Thumbnail => this.Thumbnails.GetWithHighestResolution().Url;
 
 

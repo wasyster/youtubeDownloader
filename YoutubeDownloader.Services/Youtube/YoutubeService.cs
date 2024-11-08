@@ -14,20 +14,6 @@ public class YoutubeService(YoutubeClient youtubeClient, IDbContextService<Setti
         return playlist;
     }
 
-    public async Task<string> GetVideoStreamUrlAsync(string videoURL)
-    {
-        var streamManifest = await youtubeClient.Videos.Streams.GetManifestAsync(videoURL);
-        IVideoStreamInfo? streamInfo = streamManifest.GetVideoOnlyStreams()
-                                                     .Where(x => x.Container == Container.Mp4)
-                                                     .FirstOrDefault(s => s.VideoResolution.Width == 720);
-
-        streamInfo ??= streamManifest.GetVideoOnlyStreams()
-                                     .Where(x => x.Container == Container.Mp4)
-                                     .GetWithHighestVideoQuality();
-
-        return streamInfo.Url;
-    }
-
     public async Task DownloadVideoAsync(string videoURL, string fileName)
     {
 		var normalizedFileName = await GetFilePathAsync(fileName, "mp4");
@@ -55,7 +41,7 @@ public class YoutubeService(YoutubeClient youtubeClient, IDbContextService<Setti
         var settings = await dbSettingsContext.GetAsync(DatabeseKeys.Settings);
 
 		var root = settings?.SaveFolder?.Folder?.Path!;
-        var normalizedFileName = fileName.Replace('"', ' ').Replace('|', ' ').Replace('?', ' ').Replace(@"/", "");
+        var normalizedFileName = fileName.Replace('"', ' ').Replace('|', ' ').Replace('?', ' ').Replace(@"/", "").Replace(@":", "");
 		var fullPath = $"{root}/{normalizedFileName}.{extension}";
 
 		return fullPath;
