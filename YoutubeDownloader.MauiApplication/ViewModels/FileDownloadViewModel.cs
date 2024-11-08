@@ -6,18 +6,19 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
     private string currentState = StateContainerStates.Youtube.Empty;
 
     [ObservableProperty]
-    private ObservableCollection<SearchResult> searchResults;
+    private string videoStream;
+
+    [ObservableProperty]
+    private Video videoData;
 
     private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
-    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);
+    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchAsync);
 
-    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadCommandAsync);
+    public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadAsync);
 
-    private async Task SearchCommandAsync(string videoUrl)
+    private async Task SearchAsync(string videoUrl)
     {
-        CurrentState = StateContainerStates.Youtube.Loading;
-
         if (!IsModelValid())
         {
             CurrentState = StateContainerStates.Youtube.Empty;
@@ -33,8 +34,8 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
 
         try
         {
-            var playLists = await youtubeService.GetPlaylistDataAsync(videoUrl);
-            SearchResults = playLists.Select(x => new SearchResult(x)).ToObservableCollection();
+            VideoStream = await youtubeService.GetVideoStreamUrlAsync(videoUrl);
+            VideoData = await youtubeService.GetVideoDataAsync(videoUrl) as Video;
 
             CurrentState = StateContainerStates.Youtube.Success;
         }
@@ -44,54 +45,8 @@ public partial class FileDownloadViewModel(IYoutubeService youtubeService) : Sea
         }
     }
 
-    private async Task DownloadCommandAsync()
+    private async Task DownloadAsync()
     {
-        CurrentState = StateContainerStates.Youtube.Loading;
 
-        try
-        {
-            var tasks = new Task[SearchResults.Count];
-            using var semaphoreSlim = new SemaphoreSlim(4);
-
-            for (int i = 0; i < SearchResults.Count; ++i)
-            {
-                var searchResult = SearchResults[i - 1];
-
-                if (!searchResult.Download)
-                {
-                    continue;
-                }
-
-                async Task DownloadAsync()
-                {
-                    try
-                    {
-                        if (searchResult.OnlyAudio)
-                        {
-                            await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
-                        }
-                        else
-                        {
-                            await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
-                        }
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-                }
-
-                await semaphoreSlim.WaitAsync();
-                tasks[i] = DownloadAsync();
-            }
-
-            await Task.WhenAll(tasks);
-
-            CurrentState = StateContainerStates.Youtube.Success;
-        }
-        catch
-        {
-			CurrentState = StateContainerStates.Youtube.Error;
-		}
     }
 }

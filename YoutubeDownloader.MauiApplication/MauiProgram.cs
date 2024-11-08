@@ -8,8 +8,9 @@ public static class MauiProgram
         builder.UseMauiApp<App>()
                .UseMauiCommunityToolkit()
                .UseMauiCommunityToolkitMarkup()
+               .UseMauiCommunityToolkitMediaElement()
                .UseCupertinoMauiIcons()
-               .USeAppSettingFromJson()
+               .UseAppSettingFromJson()
                .ConfigureFonts(fonts =>
                {
                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

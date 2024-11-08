@@ -2,7 +2,7 @@
 
 public static class AppSettingsConfiguration
 {
-    public static MauiAppBuilder USeAppSettingFromJson(this MauiAppBuilder builder)
+    public static MauiAppBuilder UseAppSettingFromJson(this MauiAppBuilder builder)
     {
         var file = "Resources.Raw.appSettings.json";
 

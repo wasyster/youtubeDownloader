@@ -19,7 +19,7 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
 	private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
-    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchCommandAsync);
+    public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchAsync);
 
     public IAsyncRelayCommand DownloadCommand => new AsyncRelayCommand(DownloadAsync);
 
@@ -27,7 +27,7 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
 	public IRelayCommand OnSelectCommand => new RelayCommand(OnSelect);
 
-	private async Task SearchCommandAsync(string videoUrl)
+	private async Task SearchAsync(string videoUrl)
     {
         CurrentState = StateContainerStates.Youtube.Loading;
 		CanSelectAll = false;
@@ -79,20 +79,17 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
 			CurrentState = StateContainerStates.Youtube.Downloading;
 
-            //await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
-            //         {
-            //             if (searchResult.OnlyAudio)
-            //             {
-            //                 await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
-            //             }
-            //             else
-            //             {
-            //                 await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
-            //             }
-            //         });
-
-            await Task.Delay(10000000);
-
+            await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
+                     {
+                         if (searchResult.OnlyAudio)
+                         {
+                             await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
+                         }
+                         else
+                         {
+                             await youtubeService.DownloadVideoAsync(searchResult.Url, searchResult.Title);
+                         }
+                     });
 
             CurrentState = StateContainerStates.Youtube.Success;
         }

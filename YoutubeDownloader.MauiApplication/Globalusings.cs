@@ -22,3 +22,5 @@ global using YoutubeDownloader.Shared.Models;
 global using YoutubeExplode;
 global using YoutubeExplode.Common;
 global using YoutubeDownloader.Shared.Models.Keys;
+global using YoutubeExplode.Videos;
+global using System.Globalization;
