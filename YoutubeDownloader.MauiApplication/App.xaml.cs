@@ -2,9 +2,6 @@
 
 public partial class App : Application
 {
-	private const int DefaultWidth = 500;
-	private const int DefaultHeight = 1000;
-
     private readonly IDbContextService<SettingsModel> dbSettingsContext;
 
     public App(IDbContextService<SettingsModel> dbSettingsContext)
@@ -65,18 +62,22 @@ public partial class App : Application
 
     private async void WindowActivatedAsync(object sender, EventArgs e)
 	{
+
+        var defaultWidth = 500;
+        var defaultHeight = DeviceDisplay.Current.MainDisplayInfo.Height - 275;
+
 #if WINDOWS
         var window = sender as Window;
 
         // change window size.
-        window.Width = DefaultWidth;
-        window.Height = DefaultHeight;
+        window.Width = defaultWidth;
+        window.Height = defaultHeight;
 
-        window.MinimumHeight = DefaultHeight;
-        window.MinimumWidth = DefaultWidth;
+        window.MinimumHeight = defaultHeight;
+        window.MinimumWidth = defaultWidth;
 
-        window.MaximumHeight = DefaultHeight;
-        window.MaximumWidth = DefaultWidth;
+        window.MaximumHeight = defaultHeight;
+        window.MaximumWidth = defaultWidth;
 
         // give it some time to complete window resizing task.
         await window.Dispatcher.DispatchAsync(() => { });
@@ -87,5 +88,5 @@ public partial class App : Application
         window.X = (disp.Width / disp.Density - window.Width) / 2;
         window.Y = (disp.Height / disp.Density - window.Height) / 2;
 #endif
-	}
+    }
 }

@@ -41,6 +41,9 @@ public partial class SearchResult : ObservableObject, IVideo
     [ObservableProperty]
     private bool download;
 
+    [ObservableProperty]
+    private string customFileName;
+
     public string Thumbnail => this.Thumbnails.GetWithHighestResolution().Url;
 
 

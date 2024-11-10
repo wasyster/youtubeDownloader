@@ -32,6 +32,11 @@
                 </VerticalStackLayout>
             </Grid>
         </HorizontalStackLayout>
+        <VerticalStackLayout IsVisible="{Binding SearchResult.Download, Source={x:Reference this}}"
+                             Margin="5">
+            <Label Text="Custom file name:" />
+            <Entry Text="{Binding SearchResult.CustomFileName, Source={x:Reference this}}" />
+        </VerticalStackLayout>
         <BoxView HeightRequest="2" BackgroundColor="DarkGray" Margin="5,0,5,0" />
     </VerticalStackLayout>
 </ContentView>

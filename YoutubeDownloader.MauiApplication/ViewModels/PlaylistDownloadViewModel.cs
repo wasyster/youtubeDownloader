@@ -81,7 +81,11 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
             await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
             {
-                    await youtubeService.DownloadAudioAsync(searchResult.Url, searchResult.Title);
+                var title = !string.IsNullOrEmpty(searchResult.CustomFileName.Trim()) ?
+                            searchResult.CustomFileName.Trim() :
+                            searchResult.Title.Trim();
+
+                await youtubeService.DownloadAudioAsync(searchResult.Url, title);
             });
 
 			foreach (var searcResult in this.SearchResults)
