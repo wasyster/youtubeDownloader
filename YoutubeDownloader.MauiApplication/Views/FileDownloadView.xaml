@@ -29,18 +29,25 @@
                        Text="Error occoured while on fatching the video(s)!" 
                        VerticalOptions="CenterAndExpand" HorizontalOptions="Center" />
 
-                <Label toolkit:StateView.StateKey="NotAYoutubeVideoLink"
-                       Text="Not a youtube link!" 
-                       VerticalOptions="CenterAndExpand" HorizontalOptions="Center" />
+                <VerticalStackLayout toolkit:StateView.StateKey="NotAYoutubeVideoLink"
+                                     VerticalOptions="CenterAndExpand">
+                    <Label Text="Not a youtube link!" 
+                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                           Margin="0,10,0,0" />
+                </VerticalStackLayout>
 
-                <Label toolkit:StateView.StateKey="Empty"
-                       Text="Youtube link not entered!" />
+                <VerticalStackLayout toolkit:StateView.StateKey="Empty"
+                                     VerticalOptions="CenterAndExpand">
+                    <Label Text="Youtube link not entered!" 
+                           HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand"
+                           Margin="0,10,0,0" />
+                </VerticalStackLayout>
 
                 <VerticalStackLayout toolkit:StateView.StateKey="Downloading"
                                      VerticalOptions="CenterAndExpand">
                     <ActivityIndicator IsRunning="True"/>
                     <Label Text="Downloading..." 
-                            HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                           HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                 </VerticalStackLayout>
 
                 <StackLayout toolkit:StateView.StateKey="Success">

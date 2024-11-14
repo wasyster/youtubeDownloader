@@ -17,6 +17,9 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 	[ObservableProperty]
 	private bool canSelectAll = false;
 
+    [ObservableProperty]
+    private string downloadProgerssMessage = string.Empty;
+
 	private Regex youtubeRegEx = new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)");
 
     public IAsyncRelayCommand SearchCommand => new AsyncRelayCommand<string>(SearchAsync);
@@ -62,9 +65,10 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 
     private async Task DownloadAsync()
     {
-		var hasSelectedElements = SearchResults?.Any(x => x.Download) ?? false;
+		var numberOfSelectedElements = SearchResults?.Count ?? 0;
+        var downloadCounter = 0;
 
-		if (!hasSelectedElements)
+		if (numberOfSelectedElements == 0)
         {
             return;
         }
@@ -77,15 +81,22 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
 				CancellationToken = new CancellationToken(),
 			};
 
-			CurrentState = StateContainerStates.Youtube.Downloading;
+            CanSelectAll = false;
 
-            await Parallel.ForEachAsync(SearchResults.Where(x => x.Download), parallelOptions, async (searchResult, ct) =>
+            CurrentState = StateContainerStates.Youtube.Downloading;
+
+            var selectedVideos = SearchResults?.Where(x => x.Download).ToList() ?? [];
+
+            await Parallel.ForEachAsync(selectedVideos, parallelOptions, async (searchResult, ct) =>
             {
-                var title = !string.IsNullOrEmpty(searchResult.CustomFileName.Trim()) ?
+                var title = !string.IsNullOrEmpty(searchResult.CustomFileName?.Trim()) ?
                             searchResult.CustomFileName.Trim() :
                             searchResult.Title.Trim();
 
+                DownloadProgerssMessage = $"Downloading {++downloadCounter} of {selectedVideos.Count}.";
+
                 await youtubeService.DownloadAudioAsync(searchResult.Url, title);
+                
             });
 
 			foreach (var searcResult in this.SearchResults)
@@ -99,6 +110,10 @@ public partial class PlaylistDownloadViewModel(IYoutubeService youtubeService) :
         {
 			CurrentState = StateContainerStates.Youtube.Error;
 		}
+        finally
+        {
+            CanSelectAll = true;
+        }
     }
 
     private void MarkOrUnmarkAll()
